@@ -1,5 +1,6 @@
 const { Router } = require("express");
 const { leerUrls, agregarUrls, eliminarUrls, editarUrls, editarUrlForm, redirect } = require("./homeControllers");
+const authRoutes = require("./auth")
 const urlValidar = require("../../middlewares/urlValida");
 const router = Router();
 
@@ -14,21 +15,17 @@ router.get("/editar/:id", editarUrls);
 router.post("/editar/:id",editarUrlForm);
 router.get("/:shortUrl",redirect);
 
+router.use("/auth", authRoutes)
 
 
 
 
 
-router.get("/login", (req,res)=>{
-        res.render("login")
-} )
 
 
 
 
-router.get("/auth", (req,res)=>{
-        res.render("auth")
-} )
+
 
 
 

@@ -2,7 +2,6 @@ const express =require("express");
 const app = express();
 const { create} =require("express-handlebars")
 const routes=require("../src/routes/index.js")
-const path = require('path');
 
 
 
@@ -23,7 +22,7 @@ app.use(express.json());
  
 app.use(express.static('public'));
   app.use("/", routes)
-
+  
   
 
 
