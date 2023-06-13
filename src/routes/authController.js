@@ -1,12 +1,21 @@
 const User = require("../../models/User");
-const {nanoid} = require("nanoid")
+const {nanoid} = require("nanoid");
+
+const {validationResult} =require("express-validator")
 
 const registerForm=(req,res) => {
-    res.render('register')
+    res.render("register", { mensajes: req.flash().mensajes });
 
 }
 
 const registerUser = async (req,res) => {
+    const errors = validationResult(req) // si en la ruta de registro se reporta un error, con validationResult voy a capturarlo.
+if(!errors.isEmpty()){
+    req.flash("mensajes", errors.array());
+    return res.redirect("/auth/register");
+}
+
+//Estos mensajes de errores, se mostraran en pantalla utilizando flash.
     const {userName, email, password} = req.body;
 try {
 
@@ -20,7 +29,8 @@ try {
 
     
 } catch (error) {
-    res.json({error: error.message})
+    req.flash("mensajes", [{ msg: error.message }]);
+        res.redirect("/auth/register");
 }
 }
 
@@ -40,7 +50,8 @@ const confirmAc= async (req,res)=>{
         res.redirect("/login");
         
     } catch (error) {
-        res.json({error: error.message})
+        req.flash("mensajes", [{ msg: error.message }]);
+       return res.redirect("/auth/login");
     }
 }
 
@@ -50,11 +61,16 @@ const loginForm=(req,res) => {
 
 
 
-    res.render("login")
+    res.render("login", { mensajes: req.flash().mensajes });
 
 }
 
 const loginUser = async (req, res) => {
+    const errors = validationResult(req) 
+    if(!errors.isEmpty()){
+        req.flash("mensajes", errors.array());
+        return res.redirect("/auth/login");
+    }
 
     const {email, password} = req.body;
 
@@ -71,7 +87,9 @@ try {
 
     
 } catch (error) {
-    res.send(error.message)
+
+    req.flash("mensajes", [{ msg: error.message }]);
+       return res.redirect("/auth/login");
     
 }
 
