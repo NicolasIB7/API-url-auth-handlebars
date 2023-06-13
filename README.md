@@ -5,6 +5,8 @@
 Proyecto backend donde se implementa un flujo total CRUD, utilización de diferentes endpoints y comunicación con la base de datos.
 Se trata de un acortador de urls, se puede agregar cualquier url, al agregarla se generará automaticamente un acortador, se puede eliminar las urls agregadas, editar las mismas para agregar otra url y copiar la dirección de la página.
 
+Dentro de toda esa implementación CRUD, se agregó la posibilidad de registro de usuarios, login de ususarios, métodos de seguridad, rutas seguras, auth, session. 
+
 ## Tencologías utilizadas:
 
 - Handlebars
@@ -18,7 +20,7 @@ Se trata de un acortador de urls, se puede agregar cualquier url, al agregarla s
 
 ## Actualizaciones futuras:
 
-Se irá actualizando el proyecto donde se implementarán rutas protegidas, autorización, session, passport y deploy.
+Se irá actualizando el proyecto donde se implementará subir archivos al servidor y deploy.
 
 ## Uso:
 
