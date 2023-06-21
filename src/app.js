@@ -6,14 +6,31 @@ const csrf = require("csurf"); // middleware para validar que los datos que adqu
 const app = express();
 const { create } = require("express-handlebars");
 const routes = require("../src/routes/index.js");
-const User = require("../models/User.js");
+const clientDB = require("../database/db.js");
+const MongoStore = require("connect-mongo");
+const mongoSanitize = require("express-mongo-sanitize");  //Agregar seguridad a las sesiones, evitamos mongoDB injection.
+const cors = require("cors");
+
+const corsOptions = {
+  credentials: true,
+  origin: process.env.PATHHEROKU || "*",
+  methods: ["GET", "POST"]
+};
+
+app.use(cors(corsOptions));
 
 app.use(
   session({
-    secret: "sessionSecreta",
+    secret: process.env.SECRETSESSION,
     resave: false,
     saveUninitialized: false,
     name: "secreto-nombre-session",
+    store: MongoStore.create({
+      clientPromise: clientDB,
+      dbName:process.env.DBNAME
+    }),
+    cookie: { secure: true, maxAge: 30 * 24 * 60 * 60 * 1000 },
+    
   })
 );
 
@@ -43,6 +60,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
 app.use(csrf());
+app.use(mongoSanitize());
 
 app.use((req, res, next) => {
   res.locals.csrfToken = req.csrfToken(); //variable global para las vistas.
